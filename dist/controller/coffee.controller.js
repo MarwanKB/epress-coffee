@@ -35,9 +35,70 @@ class CoffeeController {
             res.json(coffee);
         });
     }
+    getCoffee(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const coffee = yield coffee_service_1.CoffeeService.getInstance().getByID(req.params.id);
+                if (coffee === null) {
+                    res.status(404).end();
+                    return;
+                }
+                res.send(coffee);
+            }
+            catch (_a) {
+                res.status(400).end();
+                return;
+            }
+        });
+    }
+    getAllCoffees(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const coffees = yield coffee_service_1.CoffeeService.getInstance().getAll();
+            res.json(coffees);
+        });
+    }
+    deleteCoffee(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sucess = yield coffee_service_1.CoffeeService.getInstance().deleteById(req.params.id);
+                if (sucess) {
+                    res.status(204).end();
+                    return;
+                }
+                else {
+                    res.status(404).end();
+                    return;
+                }
+            }
+            catch (_a) {
+                res.status(400).end();
+                return;
+            }
+        });
+    }
+    updateCoffee(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const coffee = yield coffee_service_1.CoffeeService.getInstance().updateByID(req.params.id, req.body);
+                if (!coffee) {
+                    res.status(404).end();
+                    return;
+                }
+                res.json(coffee);
+            }
+            catch (_a) {
+                res.status(400).end();
+                return;
+            }
+        });
+    }
     buildRoutes() {
         const router = express_1.default.Router();
         router.post('/', express_1.default.json(), this.createCoffee.bind(this));
+        router.get('/', express_1.default.json(), this.getAllCoffees.bind(this));
+        router.get('/:id', this.getCoffee.bind(this));
+        router.delete('/:id', this.deleteCoffee.bind(this));
+        router.put('/:id', express_1.default.json(), this.updateCoffee.bind(this));
         return router;
     }
 }

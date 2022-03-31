@@ -41,6 +41,43 @@ class CoffeeService {
             return coffee;
         });
     }
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return coffee_model_1.CoffeeModele.find().exec();
+        });
+    }
+    getByID(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return coffee_model_1.CoffeeModele.findById(id).exec();
+        });
+    }
+    deleteById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield coffee_model_1.CoffeeModele.deleteOne({ id: id }).exec();
+            return res.deletedCount === 1;
+        });
+    }
+    updateByID(id, props) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const coffee = yield this.getByID(id);
+            if (!coffee) {
+                return null;
+            }
+            if (props.name !== undefined) {
+                coffee.name = props.name;
+            }
+            if (props.price !== undefined) {
+                coffee.price = props.price;
+            }
+            if (props.origin !== undefined) {
+                coffee.origin = props.origin;
+            }
+            if (props.intensity !== undefined) {
+                coffee.intensity = props.intensity;
+            }
+            return coffee.save();
+        });
+    }
 }
 exports.CoffeeService = CoffeeService;
 //# sourceMappingURL=coffee.service.js.map
