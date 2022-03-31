@@ -1,6 +1,8 @@
 import { Router, Request, Response } from "express";
+import { Mongoose } from "mongoose";
 export declare class CoffeeController {
-    sayHello(req: Request, res: Response): void;
-    sayCoffe(req: Request, res: Response): void;
+    private mongoose;
+    constructor(mongoose: Mongoose);
+    createCoffee(req: Request, res: Response): Promise<void>;
     buildRoutes(): Router;
 }
